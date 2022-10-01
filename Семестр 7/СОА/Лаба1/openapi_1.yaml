@@ -1,0 +1,627 @@
+openapi: 3.0.3
+info:
+  title: Сервис-Ориентированная Архитектура
+  description: Лабораторная работа №1. Разработать спецификацию в формате OpenAPI для набора веб-сервисов
+  version: 1.0.11
+tags:
+  - name: Basic operation
+    description: CRUD для Product
+  - name: Other operations
+    description: Расширенная работа с коллекцией
+paths:
+  /api/v1/products:
+    post:
+      tags:
+        - Basic operation
+      description: | 
+        **Создает новый объект Product**
+        
+          - Поле name не может быть null и не может быть пустым
+          - Поле coordinates не может быть null
+          - Поле price не может быть null и должно быть больше 0
+          - Поле partNumber 
+          - Поле manufactureCost не может быть null
+          - Поле unitOfMeasure 
+          - Поле owner не может быть null
+      
+      summary: create product
+      operationId: createProduct
+      requestBody:
+        description: Данные Product для создания
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: '**Создание прошло успешно.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+  /api/v1/products/{id}:
+    get:
+      tags:
+        - Basic operation
+      description: | 
+        **Получить информацию об элементе Product по id**
+          
+      parameters:
+        - description: Идентификатор элемента
+          in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: id
+            example: 666
+      summary: get product by id
+      operationId: getProductById
+      responses:
+        '200':
+          description: '**Запрос выполнен успешно.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+        '404':
+          description: '**Элемент не найден.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/PageNotAvailable"
+    put:
+      tags:
+        - Basic operation
+      description: | 
+        **Изменяет объект Product по id**
+        
+          - Поле name не может быть null и не может быть пустым
+          - Поле coordinates не может быть null
+          - Поле price не может быть null и должно быть больше 0
+          - Поле partNumber 
+          - Поле manufactureCost не может быть null
+          - Поле unitOfMeasure 
+          - Поле owner не может быть null
+          
+      parameters:
+        - description: Идентификатор элемента
+          in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: id
+            example: 666
+            
+      summary:  update product by id
+      operationId: UpdateProductById
+      requestBody:
+        description: Данные Product для обновления
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: '**Обновление прошло успешно.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        '404':
+          description: '**Элемент не найден.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/PageNotAvailable"
+    delete:
+      tags:
+        - Basic operation
+      description: | 
+        **Удалить элемент Product по id**
+          
+      parameters:
+        - description: Идентификатор элемента
+          in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: id
+            example: 666
+            
+      summary: delete product by id
+      operationId: deleteProductById
+      responses:
+        '200':
+          description: '**Удаление прошло успешно.**'
+        '404':
+          description: '**Элемент не найден.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/PageNotAvailable"
+  /api/v1/products/filter:
+    get:  
+      tags:
+        - Basic operation
+      description: | 
+        **Получить список объектов Product по фильтру**
+          
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: integer
+            format: id
+            minimum: 1
+            example: 666
+        - name: name
+          in: query
+          schema:
+            type: string
+            example: 'Nokia 1033'
+        - name: coordinateX
+          in: query
+          schema:
+            type: number
+            format: float
+            maximum: 791
+            example: 100.12
+        - name: coordinateY
+          in: query
+          schema:
+            type: number
+            format: float
+            example: 100.15
+        - name: creationDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+            example: '2002-03-15T00:00:00'
+        - name: price
+          in: query
+          schema:
+            type: integer
+            format: int64
+            example: 1000
+        - name: partNumber
+          in: query
+          schema:
+            type: string
+            example: 'AA75GJ57GJ4'
+        - name: manufactureCost
+          in: query
+          schema:
+            type: integer
+            format: int32
+            example: 10
+        - name: unitOfMeasure
+          in: query
+          schema:
+            $ref: "#/components/schemas/UnitOfMeasure"
+        - name: ownerName
+          in: query
+          schema:
+            type: string
+            example: 'Владимир'
+        - name: ownerPassportId
+          in: query
+          schema:
+            type: string
+            example: '1816 203512'
+        - name: ownerEyeColor
+          in: query
+          schema:
+            $ref: "#/components/schemas/Color"
+        - name: ownerHairColor
+          in: query
+          schema:
+             $ref: "#/components/schemas/Color"
+        - name: ownerNationality
+          in: query
+          schema:
+            $ref: "#/components/schemas/Country"
+        - name: ownerLocationX
+          in: query
+          schema:
+            type: integer
+            format: int32
+            example: 100
+        - name: ownerLocationY
+          in: query
+          schema:
+            type: number
+            format: double
+            example: 100.19
+        - name: ownerLocationZ
+          in: query
+          schema:
+            type: number
+            format: double
+            example: 100.19
+        - name: orderBy
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+           
+      summary: get all product by filter
+      operationId: getAllProduct
+      responses:
+        '200':
+          description: '**Запрос выполнен успешно.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+        '404':
+          description: '**Элемент не найден.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/PageNotAvailable"
+  /api/v1/count/products/price_high_parameter:
+    get:
+      tags:
+        - Other operations
+      description: | 
+        **Вернуть количество объектов, значение поля price которых больше заданного.**
+        - Поле price не может быть null и должно быть положительным числом
+          
+      operationId: countProductsWherePriceHigherClientPrice
+      parameters:
+        - description: Значение price
+          in: query
+          name: price
+          required: true
+          schema:
+            type: integer
+            example: 1
+      
+      summary: count products where price higher client price
+      responses:
+        '200':
+          description: '**Список элементов.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/CountProductsPriceHightParameter"
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+  /api/v1/search/products/name/include/substring:
+    get:
+      tags:
+        - Other operations
+      description: | 
+        **Вернуть массив объектов product, значение поля name которых содержит заданную подстроку.**
+        - Поле name не может быть null и не может быть пустым
+          
+      summary: get array products where name include substring
+      operationId: getArrayProductsWhereNameIncludeSubstring
+      parameters:
+        - description: Значение substring
+          in: query
+          name: substring
+          required: true
+          schema:
+            type: string
+            example: 'okia'
+      responses:
+        '200':
+          description: '**Список элементов.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ArrayProductsResponse"
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+  /api/v1/search/products/name/unique:
+    get:
+      tags:
+        - Other operations
+      description: | 
+        **Вернуть массив уникальных значений поля name(owner) по всем объектам.**
+          
+      summary: get array products where name unique
+      operationId: getArrayProductsWhereNameUnique
+      responses:
+        '200':
+          description: '**Список имен.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/PersontUniqueName"
+        '500':
+          description: '**Проблемы с сервером.**'
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - name
+        - coordinates
+        - price
+        - partNumber
+        - manufactureCost
+        - unitOfMeasure
+        - owner
+      properties:
+        name:
+          type: string
+          nullable: false
+          description: Имя продукта
+          example: 'Nokia 3310'
+        coordinates:
+          $ref: "#/components/schemas/Coordinates"
+        price:
+          type: integer
+          format: int64
+          minimum: 1
+          nullable: false
+          description: Цена продукта
+          example: 1000
+        partNumber:
+          type: string
+          nullable: true
+          description: Номер партии продукта
+          example: 'AA75GJ57GJ4'
+        manufactureCost:
+          type: integer
+          format: int32
+          nullable: false
+          description: Стоимость изготовления
+          example: 10
+        unitOfMeasure:
+          $ref: "#/components/schemas/UnitOfMeasure"
+        owner:
+          $ref: "#/components/schemas/Person"
+    Coordinates:
+      type: object
+      required:
+        - x
+        - y
+      properties:
+        x:
+          type: number
+          format: float
+          nullable: true
+          maximum: 791
+          description: Координата Х
+          example: 100.12
+        y:
+          type: number
+          format: float
+          nullable: false
+          description: Координата Y
+          example: 100.15
+    Person:
+      type: object
+      required:
+        - name
+        - passportID
+        - eyeColor
+        - hairColor
+        - nationality
+        - location
+      properties:
+        name:
+          type: string
+          nullable: false
+          description: Имя человека
+          example: 'Владимир'
+        passportID:
+          type: string
+          nullable: false
+          maximum: 40
+          description: Серия и номер паспорта человека
+          example: '1816 203512'
+        eyeColor:
+          $ref: "#/components/schemas/Color"
+        hairColor:
+          $ref: "#/components/schemas/Color"
+        nationality:
+          $ref: "#/components/schemas/Country"
+        location:
+          $ref: "#/components/schemas/Location"
+    Location:
+      type: object
+      required:
+        - x
+        - y
+        - z
+      properties:
+        x:
+          type: integer
+          format: int32
+          description: Координата Х
+          example: 100
+        y:
+          type: number
+          format: double
+          nullable: false
+          description: Координата Y
+          example: 100.19
+        z:
+          type: number
+          format: double
+          description:  Координата Z
+          example: 100.19
+    UnitOfMeasure:
+      type: string
+      description: Единица измерения
+      enum:
+        - KILOGRAMS
+        - METERS
+        - CENTIMETERS
+        - SQUARE_METERS
+        - MILLILITERS
+    Color:
+      type: string
+      description: Цвет
+      enum:
+        - BLACK
+        - BLUE
+        - ORANGE
+        - BROWN
+    Country:
+      type: string
+      description: Страна
+      enum:
+        - RUSSIA
+        - SPAIN
+        - NORTH_KOREA
+        - JAPAN
+    PersontUniqueName:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: string
+            example: 'Владимир'
+    ArrayProductsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+           $ref: "#/components/schemas/ProductResponse"
+    CountProductsPriceHightParameter:
+      type: object
+      required:
+        - amount
+      properties:
+        amount:
+          type: integer
+          format: int64
+          minimum: 0
+          nullable: false
+          example: '2000'
+    ProductResponse:
+      type: object
+      required:
+        - id
+        - name
+        - coordinates
+        - creationDate
+        - price
+        - partNumber
+        - manufactureCost
+        - unitOfMeasure
+        - owner
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+          nullable: false
+          description: Id продукта
+          example: '1'
+        name:
+          type: string
+          nullable: false
+          description: Имя продукта
+          example: 'Nokia 3310'
+        coordinates:
+          $ref: "#/components/schemas/Coordinates"
+        creationDate:
+          type: string
+          format: date-time
+          description: Время создания продукта
+          example: '2002-03-15T00:00:00'
+        price:
+          type: integer
+          format: int64
+          minimum: 1
+          nullable: false
+          description: Цена продукта
+          example: 1000
+        partNumber:
+          type: string
+          nullable: true
+          description: Номер партии продукта
+          example: 'AA75GJ57GJ4'
+        manufactureCost:
+          type: integer
+          format: int32
+          nullable: false
+          description: Стоимость изготовления
+          example: 10
+        unitOfMeasure:
+          $ref: "#/components/schemas/UnitOfMeasure"
+        owner:
+          $ref: "#/components/schemas/Person"
+    BadRequest:
+      required:
+        - code
+        - error
+        - message
+      properties:
+        code:
+          type: integer
+          nullable: false
+          description: Код ошибки
+          example: 400
+        message:
+          type: string
+          nullable: false
+          description:  Расшифровка ошибки
+          example: 'Validation Failed'
+    PageNotAvailable:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          nullable: false
+          description: Код ошибки
+          example: 404
+        message:
+          type: string
+          nullable: false
+          description:  Расшифровка ошибки
+          example: 'Not found item'
+    InternalServerError:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          nullable: false
+          description: Код ошибки
+          example: 500
+        message:
+          type: string
+          nullable: false
+          description:  Расшифровка ошибки
+          example: 'Internal Server Error'      
