@@ -1,0 +1,263 @@
+openapi: 3.0.3
+info:
+  title: Сервис-Ориентированная Архитектура
+  description: >-
+    Лабораторная работа №1. Разработать спецификацию в формате OpenAPI для
+    набора веб-сервисов
+  version: 1.0.11
+tags:
+  - name: Product
+    description: Операции, взаимодействующие с первым веб-сервисом
+paths:
+  /api/v1/ebay/filter/manufacturer/{manufacturer-id}:
+    get:
+      tags:
+        - Product
+      description: |
+        **Выбрать всю продукцию заданного производителя.**
+      parameters:
+        - description: Идентификатор производителя
+          in: path
+          name: manufacturer-id
+          required: true
+          schema:
+            type: integer
+            format: id
+            example: 666
+      summary: select all products of a given manufacturer
+      operationId: GetAllProductsManufactur
+      responses:
+        '200':
+          description: '**Запрос выполнен успешно.**'
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ArrayProductsResponse'
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: '**Производитель не найден.**'
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PageNotAvailable'
+  /api/v1/ebay/price/decrease/{decrease-percent}:
+    put:
+      tags:
+        - Product
+      description: |
+        **Cнизить цену всей продукции на указанный процент.**
+      parameters:
+        - description: Идентификатор производителя
+          in: path
+          name: decrease-percent
+          required: true
+          schema:
+            type: integer
+            format: int32
+            example: 45
+      summary: reduce the price of all products by the specified percentage
+      operationId: reducePriceAllProductsByPercentage
+      responses:
+        '200':
+          description: '**Запрос выполнен успешно.**'
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+components:
+  schemas:
+    ArrayProductsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductResponse'
+    ProductResponse:
+      type: object
+      required:
+        - id
+        - name
+        - coordinates
+        - creationDate
+        - price
+        - partNumber
+        - manufactureCost
+        - unitOfMeasure
+        - owner
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+          nullable: false
+          description: Id продукта
+          example: '1'
+        name:
+          type: string
+          nullable: false
+          description: Имя продукта
+          example: Nokia 3310
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        creationDate:
+          type: string
+          format: date-time
+          description: Время создания продукта
+          example: '2002-03-15T00:00:00'
+        price:
+          type: integer
+          format: int64
+          minimum: 1
+          nullable: false
+          description: Цена продукта
+          example: 1000
+        partNumber:
+          type: string
+          nullable: true
+          description: Номер партии продукта
+          example: AA75GJ57GJ4
+        manufactureCost:
+          type: integer
+          format: int32
+          nullable: false
+          description: Стоимость изготовления
+          example: 10
+        unitOfMeasure:
+          $ref: '#/components/schemas/UnitOfMeasure'
+        owner:
+          $ref: '#/components/schemas/Person'
+    Coordinates:
+      type: object
+      required:
+        - x
+        - 'y'
+      properties:
+        x:
+          type: number
+          format: float
+          nullable: true
+          maximum: 791
+          description: Координата Х
+          example: 100.12
+        'y':
+          type: number
+          format: float
+          nullable: false
+          description: Координата Y
+          example: 100.15
+    Person:
+      type: object
+      required:
+        - name
+        - passportID
+        - eyeColor
+        - hairColor
+        - nationality
+        - location
+      properties:
+        name:
+          type: string
+          nullable: false
+          description: Имя человека
+          example: Владимир
+        passportID:
+          type: string
+          nullable: false
+          maximum: 40
+          description: Серия и номер паспорта человека
+          example: 1816 203512
+        eyeColor:
+          $ref: '#/components/schemas/Color'
+        hairColor:
+          $ref: '#/components/schemas/Color'
+        nationality:
+          $ref: '#/components/schemas/Country'
+        location:
+          $ref: '#/components/schemas/Location'
+    Location:
+      type: object
+      required:
+        - x
+        - 'y'
+        - z
+      properties:
+        x:
+          type: integer
+          format: int32
+          description: Координата Х
+          example: 100
+        'y':
+          type: number
+          format: double
+          nullable: false
+          description: Координата Y
+          example: 100.19
+        z:
+          type: number
+          format: double
+          description: Координата Z
+          example: 100.19
+    UnitOfMeasure:
+      type: string
+      description: Единица измерения
+      enum:
+        - KILOGRAMS
+        - METERS
+        - CENTIMETERS
+        - SQUARE_METERS
+        - MILLILITERS
+    Color:
+      type: string
+      description: Цвет
+      enum:
+        - BLACK
+        - BLUE
+        - ORANGE
+        - BROWN
+    Country:
+      type: string
+      description: Страна
+      enum:
+        - RUSSIA
+        - SPAIN
+        - NORTH_KOREA
+        - JAPAN
+    BadRequest:
+      required:
+        - code
+        - error
+        - message
+      properties:
+        code:
+          type: integer
+          nullable: false
+          description: Код ошибки
+          example: 400
+        message:
+          type: string
+          nullable: false
+          description: Расшифровка ошибки
+          example: Validation Failed
+    PageNotAvailable:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          nullable: false
+          description: Код ошибки
+          example: 404
+        message:
+          type: string
+          nullable: false
+          description: Расшифровка ошибки
+          example: Not found item

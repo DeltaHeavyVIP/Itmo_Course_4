@@ -21,7 +21,7 @@ paths:
           name: manufacturer-id
           required: true
           schema:
-            type: integer
+            type: string
             format: id
             example: 666
       summary: select all products of a given manufacturer
@@ -30,19 +30,19 @@ paths:
         '200':
           description: '**Запрос выполнен успешно.**'
           content:
-            application/xml:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ArrayProductsResponse'
         '400':
           description: '**Невалидные входные данные.**'
           content:
-            application/xml:
+            application/json:
               schema:
                 $ref: '#/components/schemas/BadRequest'
         '404':
           description: '**Производитель не найден.**'
           content:
-            application/xml:
+            application/json:
               schema:
                 $ref: '#/components/schemas/PageNotAvailable'
   /api/v1/ebay/price/decrease/{decrease-percent}:
@@ -74,12 +74,9 @@ paths:
 components:
   schemas:
     ArrayProductsResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductResponse'
+      type: array
+      items:
+        $ref: '#/components/schemas/ProductResponse'
     ProductResponse:
       type: object
       required:

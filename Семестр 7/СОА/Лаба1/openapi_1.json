@@ -27,7 +27,7 @@
         "requestBody": {
           "description": "Данные Product для создания",
           "content": {
-            "application/xml": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Product"
               }
@@ -38,7 +38,7 @@
           "200": {
             "description": "**Создание прошло успешно.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProductResponse"
                 }
@@ -48,7 +48,7 @@
           "400": {
             "description": "**Невалидные входные данные.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BadRequest"
                 }
@@ -83,7 +83,7 @@
           "200": {
             "description": "**Запрос выполнен успешно.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProductResponse"
                 }
@@ -93,7 +93,7 @@
           "404": {
             "description": "**Элемент не найден.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PageNotAvailable"
                 }
@@ -125,7 +125,7 @@
         "requestBody": {
           "description": "Данные Product для обновления",
           "content": {
-            "application/xml": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Product"
               }
@@ -136,7 +136,7 @@
           "200": {
             "description": "**Обновление прошло успешно.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProductResponse"
                 }
@@ -146,7 +146,7 @@
           "400": {
             "description": "**Невалидные входные данные.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BadRequest"
                 }
@@ -156,7 +156,7 @@
           "404": {
             "description": "**Элемент не найден.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PageNotAvailable"
                 }
@@ -192,7 +192,7 @@
           "404": {
             "description": "**Элемент не найден.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PageNotAvailable"
                 }
@@ -203,175 +203,30 @@
       }
     },
     "/api/v1/products/filter": {
-      "get": {
+      "post": {
         "tags": [
           "Basic operation"
         ],
         "description": "**Получить список объектов Product по фильтру**\n  \n",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "id",
-              "minimum": 1,
-              "example": 666
-            }
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "example": "Nokia 1033"
-            }
-          },
-          {
-            "name": "coordinateX",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "float",
-              "maximum": 791,
-              "example": 100.12
-            }
-          },
-          {
-            "name": "coordinateY",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "float",
-              "example": 100.15
-            }
-          },
-          {
-            "name": "creationDate",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "example": "2002-03-15T00:00:00"
-            }
-          },
-          {
-            "name": "price",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int64",
-              "example": 1000
-            }
-          },
-          {
-            "name": "partNumber",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "example": "AA75GJ57GJ4"
-            }
-          },
-          {
-            "name": "manufactureCost",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "example": 10
-            }
-          },
-          {
-            "name": "unitOfMeasure",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/UnitOfMeasure"
-            }
-          },
-          {
-            "name": "ownerName",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "example": "Владимир"
-            }
-          },
-          {
-            "name": "ownerPassportId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "example": "1816 203512"
-            }
-          },
-          {
-            "name": "ownerEyeColor",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/Color"
-            }
-          },
-          {
-            "name": "ownerHairColor",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/Color"
-            }
-          },
-          {
-            "name": "ownerNationality",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/Country"
-            }
-          },
-          {
-            "name": "ownerLocationX",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "example": 100
-            }
-          },
-          {
-            "name": "ownerLocationY",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double",
-              "example": 100.19
-            }
-          },
-          {
-            "name": "ownerLocationZ",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double",
-              "example": 100.19
-            }
-          },
-          {
-            "name": "orderBy",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
+        "summary": "get all product by filter",
+        "operationId": "getAllProduct",
+        "requestBody": {
+          "description": "Данные Product для фильтрации",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Filter"
               }
             }
           }
-        ],
-        "summary": "get all product by filter",
-        "operationId": "getAllProduct",
+        },
         "responses": {
           "200": {
             "description": "**Запрос выполнен успешно.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductResponse"
+                  "$ref": "#/components/schemas/ArrayProductsResponse"
                 }
               }
             }
@@ -379,7 +234,7 @@
           "404": {
             "description": "**Элемент не найден.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PageNotAvailable"
                 }
@@ -413,7 +268,7 @@
           "200": {
             "description": "**Список элементов.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CountProductsPriceHightParameter"
                 }
@@ -423,7 +278,7 @@
           "400": {
             "description": "**Невалидные входные данные.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BadRequest"
                 }
@@ -457,7 +312,7 @@
           "200": {
             "description": "**Список элементов.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ArrayProductsResponse"
                 }
@@ -467,7 +322,7 @@
           "400": {
             "description": "**Невалидные входные данные.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BadRequest"
                 }
@@ -489,7 +344,7 @@
           "200": {
             "description": "**Список имен.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PersontUniqueName"
                 }
@@ -499,7 +354,7 @@
           "500": {
             "description": "**Проблемы с сервером.**",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalServerError"
                 }
@@ -512,6 +367,135 @@
   },
   "components": {
     "schemas": {
+      "Filter": {
+        "type": "object",
+        "required": [
+          "page",
+          "pageSize",
+          "id",
+          "name",
+          "coordinateX",
+          "coordinateY",
+          "price",
+          "partNumber",
+          "manufactureCost",
+          "unitOfMeasure",
+          "ownerName",
+          "ownerPassportId",
+          "ownerEyeColor",
+          "ownerHairColor",
+          "ownerNationality",
+          "ownerLocationX",
+          "ownerLocationY",
+          "ownerLocationZ",
+          "orderBy"
+        ],
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1,
+            "nullable": true,
+            "description": "номер страницы"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1,
+            "example": 2,
+            "nullable": true,
+            "description": "размер страницы"
+          },
+          "id": {
+            "type": "integer",
+            "format": "id",
+            "example": null,
+            "nullable": true,
+            "description": "id продукта"
+          },
+          "name": {
+            "type": "string",
+            "example": null,
+            "nullable": true
+          },
+          "coordinateX": {
+            "type": "number",
+            "format": "float",
+            "maximum": 791,
+            "example": null,
+            "nullable": true
+          },
+          "coordinateY": {
+            "type": "number",
+            "format": "float",
+            "example": null,
+            "nullable": true
+          },
+          "price": {
+            "type": "integer",
+            "format": "int64",
+            "example": null,
+            "nullable": true
+          },
+          "partNumber": {
+            "type": "string",
+            "example": null,
+            "nullable": true
+          },
+          "manufactureCost": {
+            "type": "integer",
+            "format": "int32",
+            "example": null,
+            "nullable": true
+          },
+          "unitOfMeasure": {
+            "$ref": "#/components/schemas/UnitOfMeasure"
+          },
+          "ownerName": {
+            "type": "string",
+            "example": null,
+            "nullable": true
+          },
+          "ownerPassportId": {
+            "type": "string",
+            "example": null,
+            "nullable": true
+          },
+          "ownerEyeColor": {
+            "$ref": "#/components/schemas/Color"
+          },
+          "ownerHairColor": {
+            "$ref": "#/components/schemas/Color"
+          },
+          "ownerNationality": {
+            "$ref": "#/components/schemas/Country"
+          },
+          "ownerLocationX": {
+            "type": "integer",
+            "format": "int32",
+            "example": null,
+            "nullable": true
+          },
+          "ownerLocationY": {
+            "type": "number",
+            "format": "double",
+            "example": null,
+            "nullable": true
+          },
+          "ownerLocationZ": {
+            "type": "number",
+            "format": "double",
+            "example": null,
+            "nullable": true
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "Product": {
         "type": "object",
         "required": [
@@ -685,26 +669,16 @@
         ]
       },
       "PersontUniqueName": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": "Владимир"
-            }
-          }
+        "type": "array",
+        "items": {
+          "type": "string",
+          "example": "Владимир"
         }
       },
       "ArrayProductsResponse": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProductResponse"
-            }
-          }
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ProductResponse"
         }
       },
       "CountProductsPriceHightParameter": {

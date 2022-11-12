@@ -1,0 +1,2 @@
+#!/bin/bash
+./qtest-payload < $1 | ./hex-decoder | iconv -f cp1251 -t utf8 |  sed -e 's/\xd0\x84//g' -e 's/\r/\n/g' | tr -d '\000\005' | grep -v '^$'
